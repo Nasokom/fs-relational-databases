@@ -8,4 +8,4 @@ CREATE TABLE blogs (
 );
 
 insert into blogs (author,url,title) values('Mike','http://kymou.lu','first blog post');
-insert into blogs (author,url,title) values('Mike','http://kymou.lu','2nd blog post');
+insert into blogs (author,url,title) values('Mike','http://kymou.lu','2nd blog post')
