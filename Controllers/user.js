@@ -1,10 +1,20 @@
 const router = require('express').Router()
-const {User} = require('../Models')
+const {User,Blog} = require('../Models')
 const bcrypt = require('bcrypt')
+
+const options= {
+        include:{
+            model:Blog,
+            attributes:{exclude:['userId']}
+        },
+        attributes:{
+            exclude:['passwordHash']
+        }
+    }
 
 router.get('/',async(req,res)=>{
     try{
-        const users = await User.findAll({attributes:{exclude:['passwordHash']}});
+        const users = await User.findAll(options);
         res.send(users);
     }catch(error){
         res.status(404).json(error)
@@ -16,9 +26,7 @@ router.get('/:id',async (req,res,next)=>{
         const user = await 
         User.findByPk(
             req.params.id,
-           {attributes:{
-            exclude:['passwordHash']
-           }}
+            options
         );
         if(!user){
             return res.status(404).json({message:'wrong user id'}).end()
@@ -33,8 +41,8 @@ router.post('/',async(req,res,next)=>{
 
     const {username, name, password} = req.body;
     const saltRound = 10;
-    const passwordHash = await bcrypt.hash(password,saltRound)
     try{
+        const passwordHash = await bcrypt.hash(password,saltRound)
         const newUser = await User.create({username,name,passwordHash})
         res.send(newUser);
     }catch(error){

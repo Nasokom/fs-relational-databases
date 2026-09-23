@@ -1,10 +1,22 @@
 const router = require('express').Router();
-const Blog = require('../Models/Blog')
+const {Blog,User} = require('../Models')
+const tokenExtractor = require('../Middleware/TokenExtractor')
 
+const options = { 
+    include:{
+        model:User,
+        attributes:{
+            exclude:['passwordHash']
+        }
+    },
+    attributes:{
+        exclude:['userId']
+    }
+};
 
 router.get('/',async (req,res,next)=>{
     try{
-        const blogs = await Blog.findAll({ attributes: {exclude:['userId']}});
+        const blogs = await Blog.findAll(options);
         console.log(JSON.stringify(blogs,null,2))
         return res.json(blogs)
     }catch(error){
@@ -13,29 +25,24 @@ router.get('/',async (req,res,next)=>{
 })
 
 
-router.post('/', async (req,res,next)=>{
+router.post('/', tokenExtractor, async (req,res,next)=>{
+    console.log(req.decodedToken)
     try{
-        const newBlog = await Blog.create({...req.body})
+        const newBlog = await Blog.create({...req.body,userId:req.decodedToken.id})
         console.log(JSON.stringify(newBlog,null,2))
         return res.json(newBlog)
     }catch(error){
         next(error)
-        // if(error.errors){
-        //     const errors = error.errors.map(e=>e.message).join(' ')
-        //     console.log(errors)
-        //     res.status(400).send(errors)
-        // }
-        //     console.error(error)
+ 
     }   
 })
 
 const blogFinder = async (req,res,next)=>{
     try{
 
-        req.blog = await Blog.findByPk(req.params.id);
+        req.blog = await Blog.findByPk(req.params.id,options);
         if(!req.blog){
-            throw new Error(['Funk rule'])
-            // return res.status(404).send('blog post not found').end()
+            throw new Error(['Not found'])
         }
     }catch(error){
         next(error)
@@ -50,12 +57,6 @@ router.get('/:id', blogFinder ,async (req,res)=>{
 
 })
 
-
-router.delete('/:id', blogFinder, async (req,res)=>{
-            await req.blog.destroy()
-            res.status(204).send('sucess delete')
-})
-
 router.put('/:id', blogFinder ,async (req,res,next)=>{
     try{
 
@@ -68,4 +69,16 @@ router.put('/:id', blogFinder ,async (req,res,next)=>{
     }
 })
 
+router.delete('/:id',tokenExtractor,blogFinder,  async (req,res,next)=>{
+    try{
+        if(req.blog.user.id == req.decodedToken.id){
+            await req.blog.destroy()
+            res.status(204).end()
+        }
+        throw new Error('Wrong credential')
+    }catch(error){
+        next(error)
+    }
+
+})
 module.exports = router

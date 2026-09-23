@@ -15,11 +15,18 @@ User.init({
     },
       passwordHash:{
         type:DataTypes.TEXT,
-        allowNull:false
+        allowNull:false,
     },
     username:{
         type:DataTypes.TEXT,
-        allowNull:false
+        allowNull:false,
+        unique:{
+            name: 'users_username_unique',
+            msg: 'Username is already registered'
+        },
+         validate:{
+            isEmail: { msg:'username must be a valid email address'}
+        }
     }
 }, {
   sequelize,

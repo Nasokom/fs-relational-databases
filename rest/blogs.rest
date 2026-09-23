@@ -1,0 +1,65 @@
+GET http://localhost:3003/api/blogs HTTP/1.1
+
+###
+GET http://localhost:3003/api/blogs/2 HTTP/1.1
+
+####
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pay5rb2lhQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3OTAyMDAwODF9.TY4NjnfUhdx459f5MNHQYuDeyVzeZ6m2gtUIvUW-p2Q
+
+{
+    "url":"http://test",
+    "title":"title",
+    "author":"Mike",
+    "likes":0
+}
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1AZ20uY29tIiwiaWQiOjEzLCJpYXQiOjE3OTAyMDUwMDN9.8b-QJMbtbnJsrSFeQC_jhypUbvW-QNLWTXhJus1_ZXI
+
+{
+    "url":"http://test",
+    "title":"title",
+    "author":"Mike",
+    "likes":0
+}
+
+###
+DELETE http://localhost:3003/api/blogs/15 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pay5rb2lhQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3OTAyMDAwODF9.TY4NjnfUhdx459f5MNHQYuDeyVzeZ6m2gtUIvUW-p2Q
+
+### wrong user
+DELETE http://localhost:3003/api/blogs/15 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1AZ20uY29tIiwiaWQiOjEzLCJpYXQiOjE3OTAyMDUwMDN9.8b-QJMbtbnJsrSFeQC_jhypUbvW-QNLWTXhJus1_ZXI
+
+#missing field
+####
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "url":"http://test",
+    "title":"title"
+}
+
+#validation Error
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "author":"Mike",
+    "likes":0
+}
+
+###
+DELETE http://localhost:3003/api/blogs/ HTTP/1.1
+
+###
+DELETE http://localhost:3003/api/blogs/1 HTTP/1.1
+
+
+###\
+PUT http://localhost:3003/api/blogs/2651 HTTP/1.1
