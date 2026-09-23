@@ -1,7 +1,14 @@
 const Blog = require('./Blog')
+const User = require('./user')
 
-Blog.sync()
+Blog.belongsTo(User)
+User.hasMany(Blog)
 
-module.export = {
-    Blog
+const syncModels = async ()=>{
+    await Blog.sync();
+    await User.sync();
+}
+
+module.exports = {
+    Blog, User, syncModels
 }

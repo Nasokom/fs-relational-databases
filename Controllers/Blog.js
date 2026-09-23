@@ -2,14 +2,13 @@ const router = require('express').Router();
 const Blog = require('../Models/Blog')
 
 
-router.get('/',async (req,res)=>{
+router.get('/',async (req,res,next)=>{
     try{
-        const blogs = await Blog.findAll();
+        const blogs = await Blog.findAll({ attributes: {exclude:['userId']}});
         console.log(JSON.stringify(blogs,null,2))
         return res.json(blogs)
     }catch(error){
-        console.error(error);
-        res.send(404)
+        next(error)
     }
 })
 
