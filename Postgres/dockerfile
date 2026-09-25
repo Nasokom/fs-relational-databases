@@ -2,8 +2,5 @@ FROM postgres
 
 WORKDIR /usr/src/app
 
-ENV POSTGRES_PASSWORD =  
-
-COPY . .
-
-CMD [ "psql","postgres://avnadmin:AVNS_1CH6GYYfrTeSxWsBeeZ@pg-398d61ee-naskombia-700f.f.aivencloud.com:15876/defaultdb" ]
+ENV POSTGRES_PASSWORD=sailanen
+ENV POSTGRES_DB=test_db

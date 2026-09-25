@@ -1,12 +1,24 @@
-GET http://localhost:3003/api/blogs HTTP/1.1
+GET http://localhost:3001/api/blogs HTTP/1.1
 
 ###
-GET http://localhost:3003/api/blogs/2 HTTP/1.1
+GET http://localhost:3001/api/blogs/2 HTTP/1.1
 
 ####
-POST http://localhost:3003/api/blogs HTTP/1.1
+POST http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pay5rb2lhQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3OTAyMDAwODF9.TY4NjnfUhdx459f5MNHQYuDeyVzeZ6m2gtUIvUW-p2Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1AZ20uY29tIiwiaWQiOjEsImlhdCI6MTc5MDI2NTYwN30.5x-AcW4WAcywlYRJIEJlcX2Ve19NDI01-ZMTmNxB3wk
+
+{
+    "url":"http://test",
+    "title":"sdfsf",
+    "author":"blue",
+    "likes":10
+}
+
+###
+POST http://localhost:3001/api/blogs HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1AZ21pLmNvbSIsImlkIjo3LCJpYXQiOjE3OTAzMjk3NTB9._Lcy_OUMH1zcl5Y-iH-JFDD2wA36oXDj1k28XCXk3Go
 
 {
     "url":"http://test",
@@ -14,29 +26,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa
     "author":"Mike",
     "likes":0
 }
-###
-POST http://localhost:3003/api/blogs HTTP/1.1
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1AZ20uY29tIiwiaWQiOjEzLCJpYXQiOjE3OTAyMDUwMDN9.8b-QJMbtbnJsrSFeQC_jhypUbvW-QNLWTXhJus1_ZXI
-
-{
-    "url":"http://test",
-    "title":"title",
-    "author":"Mike",
-    "likes":0
-}
 
 ###
-DELETE http://localhost:3003/api/blogs/15 HTTP/1.1
+DELETE http://localhost:3001/api/blogs/15 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pay5rb2lhQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3OTAyMDAwODF9.TY4NjnfUhdx459f5MNHQYuDeyVzeZ6m2gtUIvUW-p2Q
 
 ### wrong user
-DELETE http://localhost:3003/api/blogs/15 HTTP/1.1
+DELETE http://localhost:3001/api/blogs/15 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1AZ20uY29tIiwiaWQiOjEzLCJpYXQiOjE3OTAyMDUwMDN9.8b-QJMbtbnJsrSFeQC_jhypUbvW-QNLWTXhJus1_ZXI
 
 #missing field
 ####
-POST http://localhost:3003/api/blogs HTTP/1.1
+POST http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
 
 {
@@ -46,7 +47,7 @@ content-type: application/json
 
 #validation Error
 ###
-POST http://localhost:3003/api/blogs HTTP/1.1
+POST http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
 
 {
@@ -55,11 +56,16 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/ HTTP/1.1
+DELETE http://localhost:3001/api/blogs/ HTTP/1.1
 
 ###
-DELETE http://localhost:3003/api/blogs/1 HTTP/1.1
+DELETE http://localhost:3001/api/blogs/1 HTTP/1.1
 
 
-###\
-PUT http://localhost:3003/api/blogs/2651 HTTP/1.1
+###
+PUT http://localhost:3001/api/blogs/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "likes":5
+}

@@ -1,9 +1,8 @@
 const { Sequelize } = require('sequelize')
-const { DATABASE_URL } = require('./config')
+const { DATABASE_URL,TEST_DATABASE_URL,TESTING } = require('./config')
 
-const sequelize = new Sequelize(DATABASE_URL)
+const sequelize = new Sequelize(TESTING ? TEST_DATABASE_URL :DATABASE_URL)
 
-module.exports = {sequelize}
 
 const connectToDatabase = async () => {
   try {
@@ -17,4 +16,4 @@ const connectToDatabase = async () => {
   return null
 }
 
-module.exports = {connectToDatabase}
+module.exports = {connectToDatabase,sequelize}

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const {Blog,User} = require('../Models')
 const tokenExtractor = require('../Middleware/TokenExtractor')
+const {Op} = require("sequelize");
 
 const options = { 
     include:{
@@ -11,10 +12,28 @@ const options = {
     },
     attributes:{
         exclude:['userId']
-    }
+    },
+    where:{}
 };
 
+
 router.get('/',async (req,res,next)=>{
+
+    //Order DESC
+
+    options.order = [['likes','DESC']]
+
+    options.where={} //got to declare where obj to avoid persistent query params 
+
+    if(req.query.search){
+        options.where = {
+            [Op.or]:[
+                {title:{[Op.substring]:req.query.search}},
+                {author:{[Op.substring]:req.query.search}}
+            ],
+        }
+    }
+
     try{
         const blogs = await Blog.findAll(options);
         console.log(JSON.stringify(blogs,null,2))
@@ -58,10 +77,10 @@ router.get('/:id', blogFinder ,async (req,res)=>{
 })
 
 router.put('/:id', blogFinder ,async (req,res,next)=>{
-    try{
 
+    try{
         const blog = req.blog;
-        blog.likes ++;
+        blog.likes += req.body.likes;
         const savedBlog = await blog.save()
         res.json({likes:savedBlog.likes})
     }catch(error){

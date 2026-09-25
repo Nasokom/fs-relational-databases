@@ -1,15 +1,16 @@
-POST http://localhost:3003/api/login HTTP/1.1
+POST http://localhost:3001/api/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username":"mik.koia@gmail.com",
-    "password":"pswd"
+
+    "password":"pswd",
+    "username":"m@gm.com"
 }
 ###
-POST http://localhost:3003/api/login HTTP/1.1
+POST http://localhost:3001/api/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username":"m@gm.com",
+    "username":"m@gmi.com",
     "password":"pswd"
 }
