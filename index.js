@@ -22,6 +22,7 @@ app.use('/api/authors', authorsController)
 app.use('/',testController)
 
 app.use(ErrorCatcher)
+
 const start = async ()=>{
     await connectToDatabase();
     await syncModels()
