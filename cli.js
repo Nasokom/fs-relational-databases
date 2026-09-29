@@ -6,7 +6,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 //   dialectOptions: {
 //     ssl: {
 //       require: false,
-    //   rejectUnauthorized: false
+  //   rejectUnauthorized: false
 //     }
 //   }
 })
@@ -15,7 +15,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 
 const main = async () => {
   try {
-    const blogs = await sequelize.query('SELECT * from blogs');
+    const blogs = await sequelize.query('SELECT * from blogs')
     console.log(blogs[0])
     sequelize.close()
   } catch (error) {
