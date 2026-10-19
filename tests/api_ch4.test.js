@@ -415,9 +415,7 @@ describe('Integration: Reading Lists and Sessions', () => {
       )
       assert.fail('Should have thrown an error')
     } catch (error) {
-      console.log('####HERE#########')
       console.log(error)
-      console.log('####HERE#########')
       assert.strictEqual(error.response.status, 401)
     }
   })
