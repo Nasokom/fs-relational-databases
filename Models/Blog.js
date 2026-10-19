@@ -26,7 +26,7 @@ Blog.init({
   },
   date:{
     type:DataTypes.INTEGER,
-    allowNull:false,
+    allowNull:true,
     validate:{
       isValideDate(value) {
         if (value < 1991) {

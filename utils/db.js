@@ -2,12 +2,15 @@ const { Sequelize } = require('sequelize')
 const { DATABASE_URL,TEST_DATABASE_URL,TESTING } = require('./config')
 const { Umzug, SequelizeStorage }= require('umzug')
 
+
+
 console.log(TESTING)
 
 const URL = TESTING ? TEST_DATABASE_URL : DATABASE_URL
 
 console.log(URL)
 const sequelize = new Sequelize(URL, {
+  logging:false,
   dialectOptions: {
     ssl: {
       require: true,
@@ -15,23 +18,6 @@ const sequelize = new Sequelize(URL, {
     }
   },
 })
-
-
-const runMigrations = async () => {
-  const migrator = new Umzug({
-    migrations: {
-      glob: 'migrations/*.js',
-    },
-    storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
-    context: sequelize.getQueryInterface(),
-    logger: console,
-  })
-
-  const migrations = await migrator.up()
-  console.log('Migrations up to date', {
-    files: migrations.map((mig) => mig.name),
-  })
-}
 
 
 const connectToDatabase = async () => {
@@ -44,8 +30,28 @@ const connectToDatabase = async () => {
     console.log('failed to connect to the database')
     return process.exit(1)
   }
-
-  return null
 }
 
-module.exports = { connectToDatabase,sequelize }
+const migrationConf = {
+  migrations: {
+    glob: 'migrations/*.js',
+  },
+  storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
+  context: sequelize.getQueryInterface(),
+  logger: console,
+}
+
+const runMigrations = async () => {
+  const migrator = new Umzug(migrationConf)
+  const migrations = await migrator.up()
+  console.log('Migrations up to date', {
+    files: migrations.map((mig) => mig.name),
+  })
+}
+const rollbackMigration = async () => {
+  await sequelize.authenticate()
+  const migrator = new Umzug(migrationConf)
+  await migrator.down()
+}
+
+module.exports = { connectToDatabase, sequelize, rollbackMigration,runMigrations }

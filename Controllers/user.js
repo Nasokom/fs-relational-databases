@@ -1,22 +1,41 @@
 const router = require('express').Router()
-const { User,Blog } = require('../Models')
+const { User,Blog, ReadingList } = require('../Models')
 const bcrypt = require('bcrypt')
 
-const options= {
-  include:{
-    model:Blog,
-    attributes:{ exclude:['userId'] }
-  },
-  attributes:{
-    // exclude:['passwordHash']
-  }
+const options =(readParam) => { return {
+  attributes:
+  { exclude:['passwordHash','createdAt','updatedAt'] },
+  include: [
+    {
+      model: Blog,
+      attributes: {
+        exclude:['createdAt','updatedAt','userId'],
+      }
+    },
+    {
+      model: Blog,
+      as: 'readings',
+      attributes: { exclude:['createdAt','updatedAt','userId'] },
+      through: {
+        attributes: ['id','read'],
+        as:'readingList',
+        where: readParam !== undefined && {
+          read: readParam
+        }
+      },
+      // include:{
+      //   model:ReadingList,
+      //   attributes:['read','id'],
+      // }
+    }
+  ]
 }
-
+}
 router.get('/',async(req,res) => {
 
 
   try{
-    const users = await User.findAll(options)
+    const users = await User.findAll(options())
     res.send(users)
   }catch(error){
     res.status(404).json(error)
@@ -25,20 +44,25 @@ router.get('/',async(req,res) => {
 
 
 router.get('/:id',async (req,res,next) => {
+
+
   try{
     const user = await
     User.findByPk(
       req.params.id,
-      options
+      options(req.query.read)
     )
     if(!user){
       return res.status(404).json({ message:'wrong user id' }).end()
     }
+    console.log(user)
     res.send(user)
   }catch(error){
     next(error)
   }
 })
+
+
 
 router.post('/',async(req,res,next) => {
 

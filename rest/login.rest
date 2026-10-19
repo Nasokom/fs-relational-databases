@@ -1,3 +1,4 @@
+
 POST http://localhost:3001/api/login HTTP/1.1
 Content-Type: application/json
 
@@ -6,11 +7,21 @@ Content-Type: application/json
     "password":"pswd",
     "username":"m@gm.com"
 }
+
 ###
 POST http://localhost:3001/api/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username":"m@gmi.com",
+    "username":"ma@gm.com",
+    "password":"pswd"
+}
+
+### Errror
+POST http://localhost:3001/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username":"mxxa@gm.com",
     "password":"pswd"
 }

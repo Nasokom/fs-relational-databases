@@ -1,0 +1,2 @@
+DELETE http://localhost:3001/api/logout HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1AZ20uY29tIiwiaWQiOjEsImlhdCI6MTc5MDI2NTYwN30.5x-AcW4WAcywlYRJIEJlcX2Ve19NDI01-ZMTmNxB3wk

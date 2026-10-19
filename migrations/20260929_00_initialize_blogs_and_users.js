@@ -1,7 +1,7 @@
 
 const { DataTypes } = require('sequelize')
 
-module.exports = {
+module.exports   = {
   up: async({ context:queryInterface }) => {
     await queryInterface.createTable('users',{
       id:{

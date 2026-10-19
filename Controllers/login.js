@@ -1,35 +1,37 @@
 const router = require('express').Router()
-const { User } = require('../Models')
+const { User,Session } = require('../Models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../utils/config')
 
-router.post('/', async(req,res,next) => {
+router.post('/', async(req,res) => {
 
   const { username, password } = req.body
 
   const user = await User.findOne({ where:{ username } })
-
   // console.log(user)
   const passwordCorrect = user === null
     ? false
     : await bcrypt.compare(password, user.passwordHash)
-
-  console.log(passwordCorrect)
+    
   if (!(user && passwordCorrect)) {
     return res.status(401).json({
       error: 'invalid username or password'
     }).end()
   }
+
   const userForToken = {
     username: user.username,
     id: user.id,
   }
 
-  const token = jwt.sign(userForToken,SECRET)
+  const token = await jwt.sign(userForToken,SECRET)
+
+  //const session = await Session.findOrCreate({ where:{ userId:user.id, token } })
+  const session = await Session.create({ userId:user.id, token })
   res
     .status(200)
-    .send({ token, username: user.username, name: user.name })
+    .send({ token:session.token, username: user.username, name: user.name })
 
 })
 
